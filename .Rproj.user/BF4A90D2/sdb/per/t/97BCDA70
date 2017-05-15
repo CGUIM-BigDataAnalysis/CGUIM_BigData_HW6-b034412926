@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"長庚大學 大數據分析方法 作業六\"\noutput: github_document\n---\n\n\n## 作業說明 （繳交時請直接刪除這個章節）\n\n作業目的：期末專題暖身\n\n依下列指示，完成期末分析專題作業規劃：\n\n- 訂出分析問題，並將R Markdown的一級標題(第一行的title:)中的\"長庚大學 大數據分析方法 作業六\"取代為期末專題的分析問題，並在分析議題背景前加上組員姓名 (`10pt`)\n- 分析議題背景 (`10pt`) 與動機 (`10pt`)\n- 資料說明 (`10pt`) 與 載入 (`10pt`)\n- 資料處理與清洗 (`10pt`) 說明 (`10pt`)\n- 對資料們進行探索式資料分析，圖文並茂佳!(`20pt`)\n- 期末專題分析規劃與假設 (`10pt`)\n\n## 分析議題背景\n背景介紹背景介紹\n\n## 分析動機\n分析動機分析動機\n\n## 使用資料\n說明使用資料們\n\n載入使用資料們\n```{r}\n#這是R Code Chunk\n```\n\n## 資料處理與清洗\n說明處理資料的步驟\n\n處理資料\n```{r}\n#這是R Code Chunk\n```\n\n## 探索式資料分析\n圖文並茂圖文並茂\n```{r}\n#這是R Code Chunk\n```\n\n## 期末專題分析規劃\n期末專題要做XXOOO交叉分析\n",
+    "created" : 1494819223506.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2976292966",
+    "id" : "97BCDA70",
+    "lastKnownWriteTime" : 1494822743,
+    "last_content_update" : 1494822743085,
+    "path" : "~/GitHub/BigDataCGUIM/105/CGUIM_BigData_HW6/README.Rmd",
+    "project_path" : "README.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

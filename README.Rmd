@@ -41,6 +41,9 @@ output: github_document
 
 ## 探索式資料分析
 圖文並茂圖文並茂
+```{r}
+#這是R Code Chunk
+```
 
 ## 期末專題分析規劃
 期末專題要做XXOOO交叉分析
