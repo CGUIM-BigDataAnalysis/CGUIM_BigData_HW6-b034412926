@@ -1,0 +1,3 @@
+"0","ggplot()+geom_bar(data=topthree1,"
+"0","                  aes(x=國家,y=求學比例),"
+"0","                  stat = ""identity"")"

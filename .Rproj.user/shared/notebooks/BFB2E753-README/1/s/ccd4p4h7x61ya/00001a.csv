@@ -1,0 +1,11 @@
+"0","library(ggplot2)"
+"2","Warning message:
+"
+"2","In strsplit(code, ""\n"", fixed = TRUE) :"
+"2","
+ "
+"2"," input string 1 is invalid in this locale
+"
+"0","ggplot()+geom_bar(data=topthree1,"
+"0","                  aes(x=國家,y=商務比例),"
+"0","                  stat = ""identity"")"
