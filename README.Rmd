@@ -18,14 +18,13 @@ http://admin.taiwan.net.tw/statistics/year.aspx?no=134
 載入使用資料們
 ```{r}
 library(readr)
-country <- read_csv("C:/Users/user/Desktop/country.csv")
+country <- read_csv("C:/Users/Eileen/Desktop/country.csv")
 View(country)
 country$X1<-
   iconv(country$X1,
         from="big5", to = "UTF-8")
 library(readr)
-purpose <- read_csv("C:/Users/user/Desktop/purpose.csv"
-                    )
+purpose <- read_csv("C:/Users/Eileen/Desktop/purpose.csv")
 View(purpose)
 purpose$X1<-
   iconv(purpose$X1,
