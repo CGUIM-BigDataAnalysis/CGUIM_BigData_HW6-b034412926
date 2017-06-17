@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1497703347330.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1C6CD2D1",
+    "lastKnownWriteTime" : 5214994045994297193,
+    "last_content_update" : 1497703347330,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "7E03A44D",
+        "caption" : "sex_2016",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=sex_2016&cache_key=7E03A44D",
+        "displayedObservations" : 37,
+        "environment" : "",
+        "object" : "sex_2016",
+        "preview" : 0,
+        "totalObservations" : 37,
+        "variables" : 6
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

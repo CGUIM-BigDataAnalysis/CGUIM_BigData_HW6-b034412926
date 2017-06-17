@@ -1,0 +1,15 @@
+"0","library(treemap)"
+"2","Warning message:
+"
+"2","In strsplit(code, ""\n"", fixed = TRUE) :"
+"2","
+ "
+"2"," input string 1 is invalid in this locale
+"
+"0","data(purpose_2016)"
+"2","data set ��purpose_2016�� not found"
+"0","treemap(purpose_2016,"
+"0","       index=c(""Residence""), #分組依據"
+"0","       vSize=""Total"", #區塊大小"
+"0","       vColor=""Total"", #顏色深淺"
+"0","       type=""value"")"

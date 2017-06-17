@@ -1,0 +1,8 @@
+"0","library(ggplot2)"
+"0","qplot(x=Residence,                      "
+"0","      data=top10_male_female,              "
+"0","      geom=""bar"",             "
+"0","      main = ""visitor arrivals by sex(female) "",  "
+"0","      xlab=""Country"","
+"0","      ylab = ""Female"","
+"0","      fill=`F_Share(%)`)"

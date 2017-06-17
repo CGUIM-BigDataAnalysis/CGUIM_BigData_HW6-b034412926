@@ -1,0 +1,4 @@
+"0","library(dplyr)"
+"0","top10<-inner_join(top10,purpose_2016,c(""X1""=""Residence""))"
+"0","knitr::kable("
+"0","  top10[1:10,])"

@@ -17,93 +17,170 @@ http://admin.taiwan.net.tw/statistics/year.aspx?no=134
 
 載入使用資料們
 ```{r}
+installed.packages("iconv")
 library(readr)
-country <- read_csv("C:/Users/Eileen/Desktop/country.csv")
+country<- read_csv("C:/Users/X550LD/Desktop/visitor arrivals (2003-2016).csv")
 View(country)
 country$X1<-
   iconv(country$X1,
         from="big5", to = "UTF-8")
+
 library(readr)
-purpose <- read_csv("C:/Users/Eileen/Desktop/purpose.csv")
-View(purpose)
-purpose$X1<-
-  iconv(purpose$X1,
+purpose_2016 <- read_csv("C:/Users/X550LD/Desktop/visitor arrivals by purpose(2016) .csv")
+View(purpose_2016)
+purpose_2016$Residence<-
+  iconv(purpose_2016$Residence,
         from="big5", to = "UTF-8")
+
 ```
 
 ## 資料處理與清洗
-先取出105年前三名的人數資料，再把兩個表合起來，然後再把資料轉成數值，再算出比例，就可以知道前三名的國家來台灣大多是為了旅遊，洽公或是其他原因
+先取出105年前10名的人數資料，再把兩個表合起來，然後再把資料轉成數值，再算出比例，就可以知道前三名的國家來台灣大多是為了旅遊，洽公或是其他原因
 
 處理資料
 ```{r}
-country1<-head(country[order(country$x_2016,decreasing = T),],3)
-country1<-subset(country1,select = c(X1,x_2016))
+library(treemap)
+data(purpose_2016)
+treemap(purpose_2016,
+       index=c("Residence"), #分組依據
+       vSize="Total", #區塊大小
+       vColor="Total", #顏色深淺
+       type="value")
 
+```
+
+```{r}
+country10<-head(country[order(country$X_2016,decreasing = T),],10)
+country10<-subset(country10,select = c(X1,X_2016))
+top10<-country10[,-2]
 library(knitr)
 knitr::kable(
-  country1[1:3,])
+  country10[1:10,])
+
 library(dplyr)
-topthree<-inner_join(country1,purpose,)
+top10<-inner_join(top10,purpose_2016,c("X1"="Residence"))
+
+
 knitr::kable(
-  topthree[1:3,])
+  top10[1:10,])
 
-topthree$Total<-as.numeric(topthree$Total)
-topthree$Business<-as.numeric(topthree$Business)
-topthree$Pleasure<-as.numeric(topthree$Pleasure)
-topthree$VisitRelatives<-as.numeric(topthree$VisitRelatives)
-topthree$Conference<-as.numeric(topthree$Conference)
-topthree$Study<-as.numeric(topthree$Study)
-topthree$Exhibition<-as.numeric(topthree$Exhibition)
-topthree$MedicalTreatment<-as.numeric(topthree$MedicalTreatment)
-topthree$Others<-as.numeric(topthree$Others)
-topthree$'商務比例'<-topthree$Business/topthree$Total
-topthree$'觀光比例'<-topthree$Pleasure/topthree$Total
-topthree$'探親比例'<-topthree$VisitRelatives/topthree$Total
-topthree$'會議比例'<-topthree$Conference/topthree$Total
-topthree$'求學比例'<-topthree$Study/topthree$Total
-topthree$'展覽比例'<-topthree$Exhibition/topthree$Total
-topthree$'醫學比例'<-topthree$MedicalTreatment/topthree$Total
-topthree$'其他比例'<-topthree$Others/topthree$Total
-topthree$'國家'<-topthree$'X1'
+top10$Total<-as.numeric(top10$Total)
+top10$Business<-as.numeric(top10$Business)
+top10$Pleasure<-as.numeric(top10$Pleasure)
+top10$VisitRelatives<-as.numeric(top10$VisitRelatives)
+top10$Conference<-as.numeric(top10$Conference)
+top10$Study<-as.numeric(top10$Study)
+top10$Exhibition<-as.numeric(top10$Exhibition)
+top10$MedicalTreatment<-as.numeric(top10$MedicalTreatment)
+top10$Others<-as.numeric(top10$Others)
+top10$"Percentage of Business"<-top10$Business/top10$Total*100
+top10$"Percentage of Pleasure"<-top10$Pleasure/top10$Total*100
+top10$"Percentage of VisitRelatives"<-top10$VisitRelatives/top10$Total*100
+top10$"Percentage of Conference"<-top10$Conference/top10$Total*100
+top10$"Percentage of Study"<-top10$Study/top10$Total*100
+top10$"Percentage of Exhibition"<-top10$Exhibition/top10$Total*100
+top10$"Percentage of MedicalTreatment"<-top10$MedicalTreatment/top10$Total*100
+top10$"Percentage of Others"<-top10$Others/top10$Total*100
+top10$"Country"<-top10$'X1'
 
-topthree1<-subset(topthree,select = c('國家','商務比例','觀光比例','探親比例','會議比例','求學比例','展覽比例','醫學比例','其他比例'))
+top10_purpose<-subset(top10,select = 
+                        c("Country","Percentage of Business","Percentage of Pleasure","Percentage of VisitRelatives","Percentage of Conference","Percentage of Study","Percentage of Exhibition","Percentage of MedicalTreatment","Percentage of Others"))
 library(knitr)
 knitr::kable(
-  topthree1[1:3,]) 
+  top10_purpose[1:10,]) 
+library(ggplot2)
+
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Business"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Pleasure"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of VisitRelatives"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Conference"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Study"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Exhibition"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of MedicalTreatment"),
+                  stat = "identity")
+ggplot()+geom_bar(data=top10_purpose,
+                  aes(x=Country,y="Percentage of Others"),
+                  stat = "identity")
+
 
 ```
 
 ## 探索式資料分析
 美國人來台灣商務比例最高，但觀光比例卻最低，探親比例也比日韓高出滿多，會議也是美國最高，展覽則是韓國最高，由此可以知道，美國和台灣主要是商業合作相較於旅遊非常熱絡，韓國來台展覽多因為台灣人很哈韓，韓國來台灣辦演唱會、展覽利潤很高
 
-```{r}
-library(ggplot2)
 
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=商務比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=觀光比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=探親比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=會議比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=求學比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=展覽比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=醫學比例),
-                  stat = "identity")
-ggplot()+geom_bar(data=topthree1,
-                  aes(x=國家,y=其他比例),
-                  stat = "identity")
+```{r}
+head(top10_purpose,9)
+library(reshape2)
+
+top10.m <- melt(top10_purpose,id.vars = "Country") 
+head(top10.m,10)
+library(ggplot2)
+ggplot(top10.m, aes(variable, Country)) + 
+    geom_tile(aes(fill = value),
+              colour = "#E0FFFF")+ 
+    scale_fill_gradient(
+        low = "#E0FFFF",high = "steelblue")
+library(dplyr)
+top10.s<-top10_purpose %>% 
+    mutate_each(funs(scale), -Country) 
+head(top10.s,2)
+top10.s.m <- melt(top10.s)
+ggplot(top10.s.m, aes(variable, Country)) + 
+    geom_tile(aes(fill = value),
+              colour = "#E0FFFF")+ 
+    scale_fill_gradient(
+        low = "#E0FFFF",high = "steelblue")
+
 ```
 
+```{r}
+library(readr)
+sex_2016<- read_csv("C:/Users/X550LD/Desktop/visitor arrivals by sex(2016) .csv")
+View(sex_2016)
+sex_2016$Residence<-
+  iconv(sex_2016$Residence,
+        from="big5", to = "UTF-8")
+top10_male_female<- 
+  head(sex_2016[order(sex_2016$Total,decreasing = T),],10)
+
+library(knitr)
+knitr::kable(
+  top10_male_female[1:10,])
+
+library(ggplot2)
+qplot(x=Residence,                      
+      data=top10_male_female,              
+      geom="bar",             
+      main = "visitor arrivals by sex(male) ",  
+      xlab="Residence",  
+      ylab = "Male",
+      fill= `M_Share(%)`)
+
+library(ggplot2)
+qplot(x=Residence,                      
+      data=top10_male_female,              
+      geom="bar",             
+      main = "visitor arrivals by sex(female) ",  
+      xlab="Country",
+      ylab = "Female",
+      fill=`F_Share(%)`)
+     
+
+
+```
 ## 期末專題分析規劃
 期末專題時希望可以做出包含性別、年齡、以及對台灣觀光貢獻分析，外國人最愛旅遊地點分析等等。
