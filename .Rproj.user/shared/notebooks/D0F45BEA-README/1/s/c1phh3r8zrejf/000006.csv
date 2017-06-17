@@ -1,0 +1,22 @@
+"0","library(readr)"
+"0","countrycode <- read_csv(""C:/Users/X550LD/Desktop/Code.csv"")"
+"2","Parsed with column specification:
+cols(
+  Residence = col_character(),
+  code = col_character()
+)
+"
+"0","View(countrycode)"
+"0","countrycode$Residence<-"
+"0","  iconv(countrycode$Residence,"
+"0","        from=""big5"", to = ""UTF-8"")"
+"0","library(dplyr)"
+"0","purpose_2016_code<-inner_join(purpose_2016,countrycode, by = ""Residence"")"
+"0","library(treemap)"
+"0","data(purpose_2016_code)"
+"2","data set ¡¥purpose_2016_code¡¦ not found"
+"0","treemap(purpose_2016_code,"
+"0","       index=c(""code""), "
+"0","       vSize=""Total"", "
+"0","       vColor=""Total"", "
+"0","       type=""value"")"

@@ -19,14 +19,6 @@
 載入使用資料們
 
 ``` r
-installed.packages("iconv")
-```
-
-    ##      Package LibPath Version Priority Depends Imports LinkingTo Suggests
-    ##      Enhances License License_is_FOSS License_restricts_use OS_type Archs
-    ##      MD5sum NeedsCompilation Built
-
-``` r
 library(readr)
 ```
 
@@ -84,6 +76,7 @@ purpose_2016 <- read_csv("C:/Users/X550LD/Desktop/visitor arrivals by purpose(20
 
 ``` r
 View(purpose_2016)
+
 purpose_2016$Residence<-
   iconv(purpose_2016$Residence,
         from="big5", to = "UTF-8")
@@ -97,50 +90,22 @@ purpose_2016$Residence<-
 處理資料
 
 ``` r
-library(treemap)
+library(readr)
+countrycode <- read_csv("C:/Users/X550LD/Desktop/Code.csv")
 ```
 
-    ## Warning: package 'treemap' was built under R version 3.3.3
+    ## Parsed with column specification:
+    ## cols(
+    ##   Residence = col_character(),
+    ##   code = col_character()
+    ## )
 
 ``` r
-data(purpose_2016)
-```
+View(countrycode)
+countrycode$Residence<-
+  iconv(countrycode$Residence,
+        from="big5", to = "UTF-8")
 
-    ## Warning in data(purpose_2016): data set 'purpose_2016' not found
-
-``` r
-treemap(purpose_2016,
-       index=c("Residence"), #分組依據
-       vSize="Total", #區塊大小
-       vColor="Total", #顏色深淺
-       type="value")
-```
-
-![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
-
-``` r
-country10<-head(country[order(country$X_2016,decreasing = T),],10)
-country10<-subset(country10,select = c(X1,X_2016))
-top10<-country10[,-2]
-library(knitr)
-knitr::kable(
-  country10[1:10,])
-```
-
-| X1                            |  X\_2016|
-|:------------------------------|--------:|
-| 中國大陸(含港澳) China        |  4987259|
-| 日本 Japan                    |  1896456|
-| 韓國 Korea,Republic of        |   887412|
-| 美國 United States of America |   542261|
-| 馬來西亞 Malaysia             |   500496|
-| 新加坡 Singapore              |   371663|
-| 越南 Vietnam                  |   194323|
-| 泰國 Thailand                 |   193200|
-| 印尼 Indonesia                |   192053|
-| 菲律賓 Philippines            |   171816|
-
-``` r
 library(dplyr)
 ```
 
@@ -161,36 +126,63 @@ library(dplyr)
     ##     intersect, setdiff, setequal, union
 
 ``` r
-top10<-inner_join(top10,purpose_2016,c("X1"="Residence"))
+purpose_2016_code<-inner_join(purpose_2016,countrycode, by = "Residence")
+library(treemap)
+```
 
+    ## Warning: package 'treemap' was built under R version 3.3.3
 
+``` r
+data(purpose_2016_code)
+```
+
+    ## Warning in data(purpose_2016_code): data set 'purpose_2016_code' not found
+
+``` r
+treemap(purpose_2016_code,
+       index=c("code"), 
+       vSize="Total", 
+       vColor="Total", 
+       type="value")
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+``` r
+country10<-head(country[order(country$X_2016,decreasing = T),],10)
+country10<-subset(country10,select = c(X1,X_2016))
+library(dplyr)
+top10<-inner_join(country10,purpose_2016_code,c("X1"="Residence"))
+
+library(knitr)
 knitr::kable(
   top10[1:10,])
 ```
 
-| X1                            |    Total|  Business|  Pleasure|  VisitRelatives|  Conference|  Study|  Exhibition|  MedicalTreatment|  Others|
-|:------------------------------|--------:|---------:|---------:|---------------:|-----------:|------:|-----------:|-----------------:|-------:|
-| 中國大陸(含港澳) China        |  5126537|    102014|   4242780|          111667|        8775|  31104|         269|             33152|  596776|
-| 日本 Japan                    |  1895702|    253159|   1379233|           21403|       10572|   5707|        1245|               124|  224259|
-| 韓國 Korea,Republic of        |   884397|     59578|    693224|           17791|        5727|   6112|        3125|                81|   98759|
-| 美國 United States of America |   523888|     97081|    166044|          148645|        6434|   3983|         571|               397|  100733|
-| 馬來西亞 Malaysia             |   474420|     19269|    339710|           15475|        4569|   2211|        1540|               743|   90903|
-| 新加坡 Singapore              |   407267|     43378|    292240|           13931|        4472|   1839|         964|               189|   50254|
-| 越南 Vietnam                  |   196636|      6916|     36839|           17098|        1321|   1317|         318|               195|  132632|
-| 泰國 Thailand                 |   195640|     10179|    110116|            6652|        2490|   1367|         866|                94|   63876|
-| 印尼 Indonesia                |   188720|      5201|     32868|            8626|        2019|   1752|         738|               530|  136986|
-| 菲律賓 Philippines            |   172475|      6551|     48198|            4843|        3238|    591|         527|               255|  108272|
+| X1                            |  X\_2016|    Total|  Business|  Pleasure|  VisitRelatives|  Conference|  Study|  Exhibition|  MedicalTreatment|  Others| code |
+|:------------------------------|--------:|--------:|---------:|---------:|---------------:|-----------:|------:|-----------:|-----------------:|-------:|:-----|
+| 中國大陸(含港澳) China        |  4987259|  5126537|    102014|   4242780|          111667|        8775|  31104|         269|             33152|  596776| CHN  |
+| 日本 Japan                    |  1896456|  1895702|    253159|   1379233|           21403|       10572|   5707|        1245|               124|  224259| JPN  |
+| 韓國 Korea,Republic of        |   887412|   884397|     59578|    693224|           17791|        5727|   6112|        3125|                81|   98759| KOR  |
+| 美國 United States of America |   542261|   523888|     97081|    166044|          148645|        6434|   3983|         571|               397|  100733| USA  |
+| 馬來西亞 Malaysia             |   500496|   474420|     19269|    339710|           15475|        4569|   2211|        1540|               743|   90903| MYS  |
+| 新加坡 Singapore              |   371663|   407267|     43378|    292240|           13931|        4472|   1839|         964|               189|   50254| SGP  |
+| 越南 Vietnam                  |   194323|   196636|      6916|     36839|           17098|        1321|   1317|         318|               195|  132632| VIN  |
+| 泰國 Thailand                 |   193200|   195640|     10179|    110116|            6652|        2490|   1367|         866|                94|   63876| THL  |
+| 印尼 Indonesia                |   192053|   188720|      5201|     32868|            8626|        2019|   1752|         738|               530|  136986| IND  |
+| 菲律賓 Philippines            |   171816|   172475|      6551|     48198|            4843|        3238|    591|         527|               255|  108272| PHI  |
 
 ``` r
-top10$Total<-as.numeric(top10$Total)
-top10$Business<-as.numeric(top10$Business)
-top10$Pleasure<-as.numeric(top10$Pleasure)
-top10$VisitRelatives<-as.numeric(top10$VisitRelatives)
-top10$Conference<-as.numeric(top10$Conference)
-top10$Study<-as.numeric(top10$Study)
-top10$Exhibition<-as.numeric(top10$Exhibition)
-top10$MedicalTreatment<-as.numeric(top10$MedicalTreatment)
-top10$Others<-as.numeric(top10$Others)
+top10$Total<-as.double(top10$Total)
+top10$Business<-as.double(top10$Business)
+top10$Pleasure<-as.double(top10$Pleasure)
+top10$VisitRelatives<-as.double(top10$VisitRelatives)
+top10$Conference<-as.double(top10$Conference)
+top10$Study<-as.double(top10$Study)
+top10$Exhibition<-as.double(top10$Exhibition)
+top10$MedicalTreatment<-as.double(top10$MedicalTreatment)
+top10$Others<-as.double(top10$Others)
+
 top10$"Percentage of Business"<-top10$Business/top10$Total*100
 top10$"Percentage of Pleasure"<-top10$Pleasure/top10$Total*100
 top10$"Percentage of VisitRelatives"<-top10$VisitRelatives/top10$Total*100
@@ -202,26 +194,28 @@ top10$"Percentage of Others"<-top10$Others/top10$Total*100
 top10$"Country"<-top10$'X1'
 
 top10_purpose<-subset(top10,select = 
-                        c("Country","Percentage of Business","Percentage of Pleasure","Percentage of VisitRelatives","Percentage of Conference","Percentage of Study","Percentage of Exhibition","Percentage of MedicalTreatment","Percentage of Others"))
+                        c("code","Percentage of Business","Percentage of Pleasure","Percentage of VisitRelatives","Percentage of Conference","Percentage of Study","Percentage of Exhibition","Percentage of MedicalTreatment","Percentage of Others"))
+
 library(knitr)
 knitr::kable(
-  top10_purpose[1:10,]) 
+  top10_purpose[1:10,])
 ```
 
-| Country                       |  Percentage of Business|  Percentage of Pleasure|  Percentage of VisitRelatives|  Percentage of Conference|  Percentage of Study|  Percentage of Exhibition|  Percentage of MedicalTreatment|  Percentage of Others|
-|:------------------------------|-----------------------:|-----------------------:|-----------------------------:|-------------------------:|--------------------:|-------------------------:|-------------------------------:|---------------------:|
-| 中國大陸(含港澳) China        |                1.989920|                82.76113|                      2.178215|                 0.1711682|            0.6067254|                 0.0052472|                       0.6466744|              11.64092|
-| 日本 Japan                    |               13.354367|                72.75579|                      1.129028|                 0.5576826|            0.3010494|                 0.0656749|                       0.0065411|              11.82987|
-| 韓國 Korea,Republic of        |                6.736567|                78.38380|                      2.011653|                 0.6475599|            0.6910923|                 0.3533481|                       0.0091588|              11.16682|
-| 美國 United States of America |               18.530869|                31.69456|                     28.373431|                 1.2281251|            0.7602770|                 0.1089928|                       0.0757796|              19.22796|
-| 馬來西亞 Malaysia             |                4.061591|                71.60533|                      3.261878|                 0.9630707|            0.4660427|                 0.3246069|                       0.1566123|              19.16087|
-| 新加坡 Singapore              |               10.650998|                71.75637|                      3.420606|                 1.0980512|            0.4515465|                 0.2366998|                       0.0464069|              12.33933|
-| 越南 Vietnam                  |                3.517159|                18.73462|                      8.695254|                 0.6717997|            0.6697655|                 0.1617201|                       0.0991680|              67.45052|
-| 泰國 Thailand                 |                5.202924|                56.28501|                      3.400123|                 1.2727459|            0.6987324|                 0.4426498|                       0.0480474|              32.64976|
-| 印尼 Indonesia                |                2.755935|                17.41628|                      4.570793|                 1.0698389|            0.9283595|                 0.3910555|                       0.2808393|              72.58690|
-| 菲律賓 Philippines            |                3.798232|                27.94492|                      2.807943|                 1.8773735|            0.3426584|                 0.3055515|                       0.1478475|              62.77547|
+| code |  Percentage of Business|  Percentage of Pleasure|  Percentage of VisitRelatives|  Percentage of Conference|  Percentage of Study|  Percentage of Exhibition|  Percentage of MedicalTreatment|  Percentage of Others|
+|:-----|-----------------------:|-----------------------:|-----------------------------:|-------------------------:|--------------------:|-------------------------:|-------------------------------:|---------------------:|
+| CHN  |                1.989920|                82.76113|                      2.178215|                 0.1711682|            0.6067254|                 0.0052472|                       0.6466744|              11.64092|
+| JPN  |               13.354367|                72.75579|                      1.129028|                 0.5576826|            0.3010494|                 0.0656749|                       0.0065411|              11.82987|
+| KOR  |                6.736567|                78.38380|                      2.011653|                 0.6475599|            0.6910923|                 0.3533481|                       0.0091588|              11.16682|
+| USA  |               18.530869|                31.69456|                     28.373431|                 1.2281251|            0.7602770|                 0.1089928|                       0.0757796|              19.22796|
+| MYS  |                4.061591|                71.60533|                      3.261878|                 0.9630707|            0.4660427|                 0.3246069|                       0.1566123|              19.16087|
+| SGP  |               10.650998|                71.75637|                      3.420606|                 1.0980512|            0.4515465|                 0.2366998|                       0.0464069|              12.33933|
+| VIN  |                3.517159|                18.73462|                      8.695254|                 0.6717997|            0.6697655|                 0.1617201|                       0.0991680|              67.45052|
+| THL  |                5.202924|                56.28501|                      3.400123|                 1.2727459|            0.6987324|                 0.4426498|                       0.0480474|              32.64976|
+| IND  |                2.755935|                17.41628|                      4.570793|                 1.0698389|            0.9283595|                 0.3910555|                       0.2808393|              72.58690|
+| PHI  |                3.798232|                27.94492|                      2.807943|                 1.8773735|            0.3426584|                 0.3055515|                       0.1478475|              62.77547|
 
 ``` r
+library(dplyr) 
 library(ggplot2)
 ```
 
@@ -229,7 +223,7 @@ library(ggplot2)
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Business"),
+                  aes(x=code,y="Percentage of Business"),
                   stat = "identity")
 ```
 
@@ -237,7 +231,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Pleasure"),
+                  aes(x=code,y="Percentage of Pleasure"),
                   stat = "identity")
 ```
 
@@ -245,7 +239,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of VisitRelatives"),
+                  aes(x=code,y="Percentage of VisitRelatives"),
                   stat = "identity")
 ```
 
@@ -253,7 +247,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Conference"),
+                  aes(x=code,y="Percentage of Conference"),
                   stat = "identity")
 ```
 
@@ -261,7 +255,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Study"),
+                  aes(x=code,y="Percentage of Study"),
                   stat = "identity")
 ```
 
@@ -269,7 +263,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Exhibition"),
+                  aes(x=code,y="Percentage of Exhibition"),
                   stat = "identity")
 ```
 
@@ -277,7 +271,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of MedicalTreatment"),
+                  aes(x=code,y="Percentage of MedicalTreatment"),
                   stat = "identity")
 ```
 
@@ -285,7 +279,7 @@ ggplot()+geom_bar(data=top10_purpose,
 
 ``` r
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Others"),
+                  aes(x=code,y="Percentage of Others"),
                   stat = "identity")
 ```
 
@@ -301,21 +295,21 @@ head(top10_purpose,9)
 ```
 
     ## # A tibble: 9 x 9
-    ##                         Country `Percentage of Business`
-    ##                           <chr>                    <dbl>
-    ## 1        中國大陸(含港澳) China                 1.989920
-    ## 2                    日本 Japan                13.354367
-    ## 3        韓國 Korea,Republic of                 6.736567
-    ## 4 美國 United States of America                18.530869
-    ## 5             馬來西亞 Malaysia                 4.061591
-    ## 6              新加坡 Singapore                10.650998
-    ## 7                  越南 Vietnam                 3.517159
-    ## 8                 泰國 Thailand                 5.202924
-    ## 9                印尼 Indonesia                 2.755935
-    ## # ... with 7 more variables: `Percentage of Pleasure` <dbl>, `Percentage
-    ## #   of VisitRelatives` <dbl>, `Percentage of Conference` <dbl>,
-    ## #   `Percentage of Study` <dbl>, `Percentage of Exhibition` <dbl>,
-    ## #   `Percentage of MedicalTreatment` <dbl>, `Percentage of Others` <dbl>
+    ##    code `Percentage of Business` `Percentage of Pleasure`
+    ##   <chr>                    <dbl>                    <dbl>
+    ## 1   CHN                 1.989920                 82.76113
+    ## 2   JPN                13.354367                 72.75579
+    ## 3   KOR                 6.736567                 78.38380
+    ## 4   USA                18.530869                 31.69456
+    ## 5   MYS                 4.061591                 71.60533
+    ## 6   SGP                10.650998                 71.75637
+    ## 7   VIN                 3.517159                 18.73462
+    ## 8   THL                 5.202924                 56.28501
+    ## 9   IND                 2.755935                 17.41628
+    ## # ... with 6 more variables: `Percentage of VisitRelatives` <dbl>,
+    ## #   `Percentage of Conference` <dbl>, `Percentage of Study` <dbl>,
+    ## #   `Percentage of Exhibition` <dbl>, `Percentage of
+    ## #   MedicalTreatment` <dbl>, `Percentage of Others` <dbl>
 
 ``` r
 library(reshape2)
@@ -324,25 +318,25 @@ library(reshape2)
     ## Warning: package 'reshape2' was built under R version 3.3.3
 
 ``` r
-top10.m <- melt(top10_purpose,id.vars = "Country") 
+top10.m <- melt(top10_purpose,id.vars = "code") 
 head(top10.m,10)
 ```
 
-    ##                          Country               variable     value
-    ## 1         中國大陸(含港澳) China Percentage of Business  1.989920
-    ## 2                     日本 Japan Percentage of Business 13.354367
-    ## 3         韓國 Korea,Republic of Percentage of Business  6.736567
-    ## 4  美國 United States of America Percentage of Business 18.530869
-    ## 5              馬來西亞 Malaysia Percentage of Business  4.061591
-    ## 6               新加坡 Singapore Percentage of Business 10.650998
-    ## 7                   越南 Vietnam Percentage of Business  3.517159
-    ## 8                  泰國 Thailand Percentage of Business  5.202924
-    ## 9                 印尼 Indonesia Percentage of Business  2.755935
-    ## 10            菲律賓 Philippines Percentage of Business  3.798232
+    ##    code               variable     value
+    ## 1   CHN Percentage of Business  1.989920
+    ## 2   JPN Percentage of Business 13.354367
+    ## 3   KOR Percentage of Business  6.736567
+    ## 4   USA Percentage of Business 18.530869
+    ## 5   MYS Percentage of Business  4.061591
+    ## 6   SGP Percentage of Business 10.650998
+    ## 7   VIN Percentage of Business  3.517159
+    ## 8   THL Percentage of Business  5.202924
+    ## 9   IND Percentage of Business  2.755935
+    ## 10  PHI Percentage of Business  3.798232
 
 ``` r
 library(ggplot2)
-ggplot(top10.m, aes(variable, Country)) + 
+ggplot(top10.m, aes(variable, code)) + 
     geom_tile(aes(fill = value),
               colour = "#E0FFFF")+ 
     scale_fill_gradient(
@@ -354,7 +348,7 @@ ggplot(top10.m, aes(variable, Country)) +
 ``` r
 library(dplyr)
 top10.s<-top10_purpose %>% 
-    mutate_each(funs(scale), -Country) 
+    mutate_each(funs(scale), -code) 
 ```
 
     ## `mutate_each()` is deprecated.
@@ -368,10 +362,10 @@ head(top10.s,2)
 ```
 
     ## # A tibble: 2 x 9
-    ##                  Country `Percentage of Business` `Percentage of Pleasure`
-    ##                    <chr>                    <dbl>                    <dbl>
-    ## 1 中國大陸(含港澳) China               -0.9359917                 1.140935
-    ## 2             日本 Japan                1.1620679                 0.758218
+    ##    code `Percentage of Business` `Percentage of Pleasure`
+    ##   <chr>                    <dbl>                    <dbl>
+    ## 1   CHN               -0.9359917                 1.140935
+    ## 2   JPN                1.1620679                 0.758218
     ## # ... with 6 more variables: `Percentage of VisitRelatives` <dbl>,
     ## #   `Percentage of Conference` <dbl>, `Percentage of Study` <dbl>,
     ## #   `Percentage of Exhibition` <dbl>, `Percentage of
@@ -381,13 +375,13 @@ head(top10.s,2)
 top10.s.m <- melt(top10.s)
 ```
 
-    ## Using Country as id variables
+    ## Using code as id variables
 
     ## Warning: attributes are not identical across measure variables; they will
     ## be dropped
 
 ``` r
-ggplot(top10.s.m, aes(variable, Country)) + 
+ggplot(top10.s.m, aes(variable, code)) + 
     geom_tile(aes(fill = value),
               colour = "#E0FFFF")+ 
     scale_fill_gradient(

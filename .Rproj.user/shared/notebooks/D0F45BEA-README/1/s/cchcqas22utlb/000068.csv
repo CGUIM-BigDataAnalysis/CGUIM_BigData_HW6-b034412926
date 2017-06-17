@@ -1,9 +1,0 @@
-"0","top10.s.m <- melt(top10.s)"
-"2","Using Country as id variables
-"
-"2","attributes are not identical across measure variables; they will be dropped"
-"0","ggplot(top10.s.m, aes(variable, Country)) + "
-"0","    geom_tile(aes(fill = value),"
-"0","              colour = ""#E0FFFF"")+ "
-"0","    scale_fill_gradient("
-"0","        low = ""#E0FFFF"",high = ""steelblue"")"

@@ -1,0 +1,3 @@
+"0","ggplot()+geom_bar(data=top10_purpose,"
+"0","                  aes(x=code,y=""Percentage of MedicalTreatment""),"
+"0","                  stat = ""identity"")"

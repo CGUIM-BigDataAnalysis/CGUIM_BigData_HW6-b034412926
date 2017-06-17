@@ -1,6 +1,0 @@
-"0","country10<-head(country[order(country$X_2016,decreasing = T),],10)"
-"0","country10<-subset(country10,select = c(X1,X_2016))"
-"0","top10<-country10[,-2]"
-"0","library(knitr)"
-"0","knitr::kable("
-"0","  country10[1:10,])"

@@ -3,8 +3,6 @@ title: "外國人來台灣數量及目的分析"
 output: github_document
 ---
 
-
-
 ## 分析議題背景
 組員姓名 B0344126鄭筠臻、B0344129葉亞萱 
 在地球村的時代，每年哪一國人最常來台灣呢，來台灣又有哪些目的呢
@@ -17,7 +15,6 @@ http://admin.taiwan.net.tw/statistics/year.aspx?no=134
 
 載入使用資料們
 ```{r}
-installed.packages("iconv")
 library(readr)
 country<- read_csv("C:/Users/X550LD/Desktop/visitor arrivals (2003-2016).csv")
 View(country)
@@ -28,6 +25,7 @@ country$X1<-
 library(readr)
 purpose_2016 <- read_csv("C:/Users/X550LD/Desktop/visitor arrivals by purpose(2016) .csv")
 View(purpose_2016)
+
 purpose_2016$Residence<-
   iconv(purpose_2016$Residence,
         from="big5", to = "UTF-8")
@@ -39,12 +37,21 @@ purpose_2016$Residence<-
 
 處理資料
 ```{r}
+library(readr)
+countrycode <- read_csv("C:/Users/X550LD/Desktop/Code.csv")
+View(countrycode)
+countrycode$Residence<-
+  iconv(countrycode$Residence,
+        from="big5", to = "UTF-8")
+
+library(dplyr)
+purpose_2016_code<-inner_join(purpose_2016,countrycode, by = "Residence")
 library(treemap)
-data(purpose_2016)
-treemap(purpose_2016,
-       index=c("Residence"), #分組依據
-       vSize="Total", #區塊大小
-       vColor="Total", #顏色深淺
+data(purpose_2016_code)
+treemap(purpose_2016_code,
+       index=c("code"), 
+       vSize="Total", 
+       vColor="Total", 
        type="value")
 
 ```
@@ -52,27 +59,23 @@ treemap(purpose_2016,
 ```{r}
 country10<-head(country[order(country$X_2016,decreasing = T),],10)
 country10<-subset(country10,select = c(X1,X_2016))
-top10<-country10[,-2]
-library(knitr)
-knitr::kable(
-  country10[1:10,])
-
 library(dplyr)
-top10<-inner_join(top10,purpose_2016,c("X1"="Residence"))
+top10<-inner_join(country10,purpose_2016_code,c("X1"="Residence"))
 
-
+library(knitr)
 knitr::kable(
   top10[1:10,])
 
-top10$Total<-as.numeric(top10$Total)
-top10$Business<-as.numeric(top10$Business)
-top10$Pleasure<-as.numeric(top10$Pleasure)
-top10$VisitRelatives<-as.numeric(top10$VisitRelatives)
-top10$Conference<-as.numeric(top10$Conference)
-top10$Study<-as.numeric(top10$Study)
-top10$Exhibition<-as.numeric(top10$Exhibition)
-top10$MedicalTreatment<-as.numeric(top10$MedicalTreatment)
-top10$Others<-as.numeric(top10$Others)
+top10$Total<-as.double(top10$Total)
+top10$Business<-as.double(top10$Business)
+top10$Pleasure<-as.double(top10$Pleasure)
+top10$VisitRelatives<-as.double(top10$VisitRelatives)
+top10$Conference<-as.double(top10$Conference)
+top10$Study<-as.double(top10$Study)
+top10$Exhibition<-as.double(top10$Exhibition)
+top10$MedicalTreatment<-as.double(top10$MedicalTreatment)
+top10$Others<-as.double(top10$Others)
+
 top10$"Percentage of Business"<-top10$Business/top10$Total*100
 top10$"Percentage of Pleasure"<-top10$Pleasure/top10$Total*100
 top10$"Percentage of VisitRelatives"<-top10$VisitRelatives/top10$Total*100
@@ -84,35 +87,40 @@ top10$"Percentage of Others"<-top10$Others/top10$Total*100
 top10$"Country"<-top10$'X1'
 
 top10_purpose<-subset(top10,select = 
-                        c("Country","Percentage of Business","Percentage of Pleasure","Percentage of VisitRelatives","Percentage of Conference","Percentage of Study","Percentage of Exhibition","Percentage of MedicalTreatment","Percentage of Others"))
+                        c("code","Percentage of Business","Percentage of Pleasure","Percentage of VisitRelatives","Percentage of Conference","Percentage of Study","Percentage of Exhibition","Percentage of MedicalTreatment","Percentage of Others"))
+
 library(knitr)
 knitr::kable(
-  top10_purpose[1:10,]) 
-library(ggplot2)
+  top10_purpose[1:10,])
 
+
+
+
+library(dplyr) 
+library(ggplot2)
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Business"),
+                  aes(x=code,y="Percentage of Business"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Pleasure"),
+                  aes(x=code,y="Percentage of Pleasure"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of VisitRelatives"),
+                  aes(x=code,y="Percentage of VisitRelatives"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Conference"),
+                  aes(x=code,y="Percentage of Conference"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Study"),
+                  aes(x=code,y="Percentage of Study"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Exhibition"),
+                  aes(x=code,y="Percentage of Exhibition"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of MedicalTreatment"),
+                  aes(x=code,y="Percentage of MedicalTreatment"),
                   stat = "identity")
 ggplot()+geom_bar(data=top10_purpose,
-                  aes(x=Country,y="Percentage of Others"),
+                  aes(x=code,y="Percentage of Others"),
                   stat = "identity")
 
 
@@ -126,20 +134,20 @@ ggplot()+geom_bar(data=top10_purpose,
 head(top10_purpose,9)
 library(reshape2)
 
-top10.m <- melt(top10_purpose,id.vars = "Country") 
+top10.m <- melt(top10_purpose,id.vars = "code") 
 head(top10.m,10)
 library(ggplot2)
-ggplot(top10.m, aes(variable, Country)) + 
+ggplot(top10.m, aes(variable, code)) + 
     geom_tile(aes(fill = value),
               colour = "#E0FFFF")+ 
     scale_fill_gradient(
         low = "#E0FFFF",high = "steelblue")
 library(dplyr)
 top10.s<-top10_purpose %>% 
-    mutate_each(funs(scale), -Country) 
+    mutate_each(funs(scale), -code) 
 head(top10.s,2)
 top10.s.m <- melt(top10.s)
-ggplot(top10.s.m, aes(variable, Country)) + 
+ggplot(top10.s.m, aes(variable, code)) + 
     geom_tile(aes(fill = value),
               colour = "#E0FFFF")+ 
     scale_fill_gradient(

@@ -1,3 +1,0 @@
-"0","library(reshape2)"
-"0","top10.m <- melt(top10_purpose,id.vars = ""Country"") "
-"0","head(top10.m,10)"

@@ -1,4 +1,0 @@
-"0","library(ggplot2)"
-"0","ggplot()+geom_bar(data=top10_purpose,"
-"0","                  aes(x=Country,y=""Percentage of Business""),"
-"0","                  stat = ""identity"")"

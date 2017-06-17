@@ -1,0 +1,6 @@
+"0","library(ggplot2)"
+"0","ggplot(top10.m, aes(variable, code)) + "
+"0","    geom_tile(aes(fill = value),"
+"0","              colour = ""#E0FFFF"")+ "
+"0","    scale_fill_gradient("
+"0","        low = ""#E0FFFF"",high = ""steelblue"")"
