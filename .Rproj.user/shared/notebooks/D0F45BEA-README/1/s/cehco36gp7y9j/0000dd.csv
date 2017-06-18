@@ -1,0 +1,3 @@
+"0","qplot(code, top10$""Percentage of Exhibition"", data=top10_purpose,color=code,"
+"0","      main = ""Percentage of Exhibition"","
+"0","      geom = c(""point"", ""smooth""))"
