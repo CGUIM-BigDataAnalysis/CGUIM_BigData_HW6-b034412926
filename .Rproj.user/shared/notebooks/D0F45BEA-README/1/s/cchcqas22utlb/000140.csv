@@ -1,4 +1,0 @@
-"0","library(reshape2)"
-"2","package ¡¥reshape2¡¦ was built under R version 3.3.3"
-"0","top10.m <- melt(top10_purpose,id.vars = ""code"") "
-"0","head(top10.m,10)"

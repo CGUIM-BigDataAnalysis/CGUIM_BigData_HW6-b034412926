@@ -1,4 +1,0 @@
-"0","classification<-reason[grepl('合計',abc)]"
-"0","library(knitr)"
-"0","knitr::kable("
-"0","  classification[1:3,])"

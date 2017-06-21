@@ -1,7 +1,0 @@
-"0","library(dplyr) "
-"0","library(ggplot2)"
-"2","package ¡¥ggplot2¡¦ was built under R version 3.3.3"
-"0","qplot(code, top10$""Percentage of Business"", "
-"0","      data=top10_purpose,color=code,"
-"0","      main = ""Percentage of Business"","
-"0","      geom = c(""point"", ""smooth""))"
