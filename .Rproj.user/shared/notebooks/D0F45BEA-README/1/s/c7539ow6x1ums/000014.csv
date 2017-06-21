@@ -1,0 +1,40 @@
+"0","library(readr)"
+"0","countrycode <- read_csv(""C:/Users/X550LD/Desktop/Code.csv"")"
+"2","Parsed with column specification:
+cols(
+  Residence = col_character(),
+  code = col_character()
+)
+"
+"0","View(countrycode)"
+"0","countrycode$Residence<-"
+"0","  iconv(countrycode$Residence,"
+"0","        from=""big5"", to = ""UTF-8"")"
+"0","library(dplyr)"
+"2","package ．dplyr・ was built under R version 3.3.3"
+"2","Installed Rcpp (0.12.10) different from Rcpp used to build dplyr (0.12.11).
+Please reinstall dplyr to avoid random crashes or undefined behavior."
+"2","
+Attaching package: ．dplyr・
+
+"
+"2","The following objects are masked from ．package:stats・:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ．package:base・:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","purpose_2016_code<-inner_join(purpose_2016,countrycode, by = ""Residence"")"
+"0","library(treemap)"
+"2","package ．treemap・ was built under R version 3.3.3"
+"0","data(purpose_2016_code)"
+"2","data set ．purpose_2016_code・ not found"
+"0","treemap(purpose_2016_code,"
+"0","       index=c(""code""), "
+"0","       vSize=""Total"", "
+"0","       vColor=""Total"", "
+"0","       type=""value"")"

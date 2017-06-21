@@ -1,0 +1,5 @@
+"0","library(readr)"
+"2","package ¡¥readr¡¦ was built under R version 3.3.3"
+"0","sex_2016<- read_csv(""C:/Users/X550LD/Desktop/visitor arrivals by sex(2016) .csv"")"
+"2","Error: 'C:/Users/X550LD/Desktop/visitor arrivals by sex(2016) .csv' does not exist.
+"

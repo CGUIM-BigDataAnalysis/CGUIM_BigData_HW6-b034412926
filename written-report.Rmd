@@ -1,8 +1,9 @@
 ---
 title: "外國人來台灣數量及外配分析"
-output: github_document
+author: "yahsuanyeh"
+date: "2017年6月20日"
+output: html_document
 ---
-
 ## 分析議題背景
 組員姓名 B0344126鄭筠臻、B0344129葉亞萱 
 在地球村的時代，每年哪一國人最常來台灣呢，來台灣又有哪些目的呢?
@@ -128,7 +129,6 @@ qplot(code, top10$"Percentage of Others", data=top10_purpose,color=code,
       geom = c("point", "smooth"))
 
 ```
-
 ## 探索式資料分析
 美國人來台灣商務比例最高，但觀光比例卻最低，探親比例也比日韓高出滿多，會議也是美國最高，展覽則是韓國最高，由此可以知道，美國和台灣主要是商業合作相較於旅遊非常熱絡，韓國來台展覽多因為台灣人很哈韓，韓國來台灣辦演唱會、展覽利潤很高。
 
@@ -155,8 +155,6 @@ ggplot(top10.s.m, aes(variable, code)) +
         low = "#FFB6C1",high ="#DC143C")
 
 ```
-
-
 
 ```{r}
 library(readr)
@@ -194,10 +192,6 @@ qplotfemale<-
 qplotfemale
 
 ```
-
-
-
-
 ```{r}
 library(readr)
 reason <- read_csv("C:/Users/X550LD/Desktop/reason.csv")

@@ -1,6 +1,0 @@
-"0","library(dplyr) "
-"0","library(ggplot2)"
-"0","qplot(code, top10$""Percentage of Business"", "
-"0","      data=top10_purpose,color=code,"
-"0","      main = ""Percentage of Business"","
-"0","      geom = c(""point"", ""smooth""))"

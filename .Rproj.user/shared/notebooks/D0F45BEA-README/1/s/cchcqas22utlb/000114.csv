@@ -1,3 +1,0 @@
-"0","top10_purpose<-subset(top10,select = "
-"0","                        c(""code"",""Business"",""Pleasure"",""VisitRelatives"",""Conference"",""Study"",""Exhibition"",""MedicalTreatment"",""Others""))"
-"0","head(top10_purpose,9)"
